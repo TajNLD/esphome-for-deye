@@ -166,7 +166,7 @@ switch:
     name: sun3p-Time point 1 charge enable
     register_type: holding
     address: 172
-    bitmask: 1   # 2 hvis man ønsker Gen charging enabel i sted for.
+    bitmask: 1 
     entity_category: config
     icon: "mdi:toggle-switch"
  
@@ -176,7 +176,7 @@ switch:
     name: sun3p-Time point 2 charge enable
     register_type: holding
     address: 173
-    bitmask: 1    # 2 hvis man ønsker Gen charging enabel i sted for.
+    bitmask: 1
     entity_category: config
     icon: "mdi:toggle-switch"
  
@@ -186,7 +186,7 @@ switch:
     name: sun3p-Time point 3 charge enable
     register_type: holding
     address: 174
-    bitmask: 1    # 2 hvis man ønsker Gen charging enabel i sted for.
+    bitmask: 1
     entity_category: config
     icon: "mdi:toggle-switch"
  
@@ -196,7 +196,7 @@ switch:
     name: sun3p-Time point 4 charge enable
     register_type: holding
     address: 175
-    bitmask: 1    # 2 hvis man ønsker Gen charging enabel i sted for.
+    bitmask: 1
     entity_category: config
     icon: "mdi:toggle-switch"
  
@@ -206,7 +206,7 @@ switch:
     name: sun3p-Time point 5 charge enable
     register_type: holding
     address: 176
-    bitmask: 1    # 2 hvis man ønsker Gen charging enabel i sted for.
+    bitmask: 1
     entity_category: config
     icon: "mdi:toggle-switch"
  
@@ -216,7 +216,7 @@ switch:
     name: sun3p-Time point 6 charge enable
     register_type: holding
     address: 177
-    bitmask: 1    # 2 hvis man ønsker Gen charging enabel i sted for.
+    bitmask: 1
     entity_category: config
     icon: "mdi:toggle-switch"
  
@@ -286,15 +286,25 @@ select:
   - platform: modbus_controller
     use_write_multiple: true
     modbus_controller_id: ${modbus_controller_id}
+    name: "sun3p- Energy Pattern"
+    address: 141
+    value_type: U_WORD
+    optionsmap:
+      "Battery first": 0
+      "Load first": 1
+
+  - platform: modbus_controller
+    use_write_multiple: true
+    modbus_controller_id: ${modbus_controller_id}
     name: "sun3p-Limit control mode"
     id: sun3p_limit_control_mode
     address: 142
     # address: 500
     value_type: U_WORD
     optionsmap:
-      "Allow Export": 0
-      # "Essentials": 1
-      "Zero Export": 2
+      "Selling First": 0
+      "Zero Expert To Load": 1
+      "Zero export to CT": 2
 
   - platform: modbus_controller
     use_write_multiple: true
@@ -328,7 +338,7 @@ select:
       "21:00": 2100
       "22:00": 2200
       "23:00": 2300
-      "24:00": 2400
+      "24:00": 2359
 
   - platform: modbus_controller
     use_write_multiple: true
@@ -362,7 +372,7 @@ select:
       "21:00": 2100
       "22:00": 2200
       "23:00": 2300
-      "24:00": 2400
+      "24:00": 2359
 
   - platform: modbus_controller
     use_write_multiple: true
@@ -396,7 +406,7 @@ select:
       "21:00": 2100
       "22:00": 2200
       "23:00": 2300
-      "24:00": 2400
+      "24:00": 2359
 
   - platform: modbus_controller
     use_write_multiple: true
@@ -430,7 +440,7 @@ select:
       "21:00": 2100
       "22:00": 2200
       "23:00": 2300
-      "24:00": 2400
+      "24:00": 2359
 
   - platform: modbus_controller
     use_write_multiple: true
@@ -464,7 +474,7 @@ select:
       "21:00": 2100
       "22:00": 2200
       "23:00": 2300
-      "24:00": 2400
+      "24:00": 2359
 
   - platform: modbus_controller
     use_write_multiple: true
@@ -498,9 +508,22 @@ select:
       "21:00": 2100
       "22:00": 2200
       "23:00": 2300
-      "24:00": 2400
+      "24:00": 2359
 
 number:
+- platform: modbus_controller
+    use_write_multiple: true
+    modbus_controller_id: ${modbus_controller_id}
+    id: sun3p_Grid_Peak_Shaving_Power
+    name: "sun3p-Grid Peak Shaving Power"
+    address: 191
+    step: 500
+    unit_of_measurement: W
+    min_value: 1
+    max_value: 16000    
+    mode: slider
+    value_type: U_WORD
+
   - platform: modbus_controller
     use_write_multiple: true
     modbus_controller_id: ${modbus_controller_id}
@@ -540,85 +563,6 @@ number:
     mode: slider
     value_type: U_WORD
 
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_1
-  #   name: "sun3p-Time point 1 start"
-  #   min_value: 0
-  #   max_value: 2400
-  #   step: 100
-  #   address: 148
-  #   value_type: U_WORD   
-
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_1_new
-  #   name: "sun3p-Time point 1 new"
-  #   min_value: 0
-  #   max_value: 24
-  #   step: 0.01
-  #   address: 148
-  #   lambda: "return  x * 0.01;"
-  #   write_lambda: "return  x * 100;"
-  #   value_type: U_WORD      
-  
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_2
-  #   name: "sun3p-Time point 2 start"
-  #   min_value: 0
-  #   max_value: 2400
-  #   step: 100
-  #   address: 149
-  #   value_type: U_WORD
-    
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_3
-  #   name: "sun3p-Time point 3 start"
-  #   min_value: 0
-  #   max_value: 2400
-  #   step: 100
-  #   address: 150
-  #   value_type: U_WORD
-    
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_4
-  #   name: "sun3p-Time point 4 start"
-  #   min_value: 0
-  #   max_value: 2400
-  #   step: 100
-  #   address: 151
-  #   value_type: U_WORD
-    
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_5
-  #   name: "sun3p-Time point 5 start"
-  #   min_value: 0
-  #   max_value: 2400
-  #   step: 100
-  #   address: 152
-  #   value_type: U_WORD
-    
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_6
-  #   name: "sun3p-Time point 6 start"
-  #   min_value: 0
-  #   max_value: 2400
-  #   step: 100
-  #   address: 153
-  #   value_type: U_WORD
-    
   - platform: modbus_controller
     use_write_multiple: true
     modbus_controller_id: ${modbus_controller_id}
@@ -776,76 +720,76 @@ number:
     write_lambda: "return  x * 100;"
     value_type: U_WORD   
 
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_1_capacity
-  #   name: "sun3p-Time point 1 capacity"
-  #   unit_of_measurement: "%"
-  #   address: 166
-  #   min_value: 0
-  #   max_value: 100
-  #   step: 5
-  #   value_type: U_WORD
+   - platform: modbus_controller
+     use_write_multiple: true
+     modbus_controller_id: ${modbus_controller_id}
+     id: sun3p_Time_point_1_capacity
+     name: "sun3p-Time point 1 capacity"
+     unit_of_measurement: "%"
+     address: 166
+     min_value: 0
+     max_value: 100
+     step: 5
+     value_type: U_WORD
     
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_2_capacity
-  #   name: "sun3p-Time point 2 capacity"
-  #   unit_of_measurement: "%"
-  #   address: 167
-  #   min_value: 0
-  #   max_value: 100
-  #   step: 5
-  #   value_type: U_WORD
+   - platform: modbus_controller
+     use_write_multiple: true
+     modbus_controller_id: ${modbus_controller_id}
+     id: sun3p_Time_point_2_capacity
+     name: "sun3p-Time point 2 capacity"
+     unit_of_measurement: "%"
+     address: 167
+     min_value: 0
+     max_value: 100
+     step: 5
+     value_type: U_WORD
     
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_3_capacity
-  #   name: "sun3p-Time point 3 capacity"
-  #   unit_of_measurement: "%"
-  #   address: 168
-  #   min_value: 0
-  #   max_value: 100
-  #   step: 5
-  #   value_type: U_WORD
+   - platform: modbus_controller
+     use_write_multiple: true
+     modbus_controller_id: ${modbus_controller_id}
+     id: sun3p_Time_point_3_capacity
+     name: "sun3p-Time point 3 capacity"
+     unit_of_measurement: "%"
+     address: 168
+     min_value: 0
+     max_value: 100
+     step: 5
+     value_type: U_WORD
     
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_4_capacity
-  #   name: "sun3p-Time point 4 capacity"
-  #   unit_of_measurement: "%"
-  #   address: 169
-  #   min_value: 0
-  #   max_value: 100
-  #   step: 5
-  #   value_type: U_WORD
+   - platform: modbus_controller
+     use_write_multiple: true
+     modbus_controller_id: ${modbus_controller_id}
+     id: sun3p_Time_point_4_capacity
+     name: "sun3p-Time point 4 capacity"
+     unit_of_measurement: "%"
+     address: 169
+     min_value: 0
+     max_value: 100
+     step: 5
+     value_type: U_WORD
     
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_5_capacity
-  #   name: "sun3p-Time point 5 capacity"
-  #   unit_of_measurement: "%"
-  #   address: 170
-  #   min_value: 0
-  #   max_value: 100
-  #   step: 5
-  #   value_type: U_WORD
+   - platform: modbus_controller
+     use_write_multiple: true
+     modbus_controller_id: ${modbus_controller_id}
+     id: sun3p_Time_point_5_capacity
+     name: "sun3p-Time point 5 capacity"
+     unit_of_measurement: "%"
+     address: 170
+     min_value: 0
+     max_value: 100
+     step: 5
+     value_type: U_WORD
     
-  # - platform: modbus_controller
-  #   use_write_multiple: true
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   id: sun3p_Time_point_6_capacity
-  #   name: "sun3p-Time point 6 capacity"
-  #   unit_of_measurement: "%"
-  #   address: 171
-  #   min_value: 0
-  #   max_value: 100
-  #   value_type: U_WORD
+   - platform: modbus_controller
+     use_write_multiple: true
+     modbus_controller_id: ${modbus_controller_id}
+     id: sun3p_Time_point_6_capacity
+     name: "sun3p-Time point 6 capacity"
+     unit_of_measurement: "%"
+     address: 171
+     min_value: 0
+     max_value: 100
+     value_type: U_WORD
 
 sensor:
   - platform: modbus_controller #sun3p-køleplade temeratur
@@ -861,31 +805,6 @@ sensor:
       - offset: -1000
       - multiply:  0.1
  
-  # - platform: modbus_controller #sun3p-load frequency
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   name: "sun3p-load frequency"
-  #   id: sun3p_load_frequency
-  #   register_type: holding
-  #   address: 655
-  #   unit_of_measurement: "Hz"
-  #   state_class: "measurement"
-  #   accuracy_decimals: 2
-  #   filters:
-  #     - multiply: 0.01
-  #   value_type: U_WORD
- 
-  # - platform: modbus_controller #sun3p-inverter-frequency
-  #   modbus_controller_id: ${modbus_controller_id}
-  #   name: "sun3p-inverter-frequency"
-  #   id: sun3p_inverter_frequency
-  #   register_type: holding
-  #   address: 638
-  #   unit_of_measurement: "Hz"
-  #   state_class: "measurement"
-  #   accuracy_decimals: 2
-  #   filters:
-  #     - multiply: 0.01
-  #   value_type: U_WORD
  
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
